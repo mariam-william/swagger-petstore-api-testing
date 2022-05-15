@@ -1,0 +1,405 @@
+{
+	"info": {
+		"_postman_id": "04ede1c1-e7f1-4441-b05a-d20c2dc44dea",
+		"name": "Swagger Petstore",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create list of users to Petstore",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "[\r\n  {\r\n    \"id\": 1,\r\n    \"username\": \"user1\",\r\n    \"firstName\": \"user1 fn\",\r\n    \"lastName\": \"user1 ln\",\r\n    \"email\": \"user1@gmail.com\",\r\n    \"password\": \"Passw0rd1\",\r\n    \"phone\": \"123\",\r\n    \"userStatus\": 0\r\n  },\r\n  {\r\n    \"id\": 2,\r\n    \"username\": \"user2\",\r\n    \"firstName\": \"user2 fn\",\r\n    \"lastName\": \"user2 ln\",\r\n    \"email\": \"user2@gmail.com\",\r\n    \"password\": \"Passw0rd2\",\r\n    \"phone\": \"223\",\r\n    \"userStatus\": 1\r\n  },\r\n  {\r\n    \"id\": 3,\r\n    \"username\": \"user3\",\r\n    \"firstName\": \"user3 fn\",\r\n    \"lastName\": \"user3 ln\",\r\n    \"email\": \"user3@gmail.com\",\r\n    \"password\": \"Passw0rd3\",\r\n    \"phone\": \"323\",\r\n    \"userStatus\": 0\r\n  }\r\n]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseurl}}/user/createWithArray",
+					"host": [
+						"{{baseurl}}"
+					],
+					"path": [
+						"user",
+						"createWithArray"
+					]
+				},
+				"description": "Add multiple user to Swagger Petstore system using an array of users data"
+			},
+			"response": []
+		},
+		{
+			"name": "Create user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Check if user is added to users db successfully\r",
+							"pm.test(\"User is added successfully\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// Save userid to use later on\r",
+							"pm.environment.set(\"userId\", parseInt(pm.response.json().message));"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": " {\r\n    \"id\": 4,\r\n    \"username\": \"user4\",\r\n    \"firstName\": \"user4 fn\",\r\n    \"lastName\": \"user4 ln\",\r\n    \"email\": \"user4@gmail.com\",\r\n    \"password\": \"Passw0rd4\",\r\n    \"phone\": \"423\",\r\n    \"userStatus\": 1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseurl}}/user",
+					"host": [
+						"{{baseurl}}"
+					],
+					"path": [
+						"user"
+					]
+				},
+				"description": "Add user to Swagger Petstore system with valid user data"
+			},
+			"response": []
+		},
+		{
+			"name": "Login to Petstore",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"User logged in successfully\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseurl}}/user/login?username=user1&password=Passw0rd1",
+					"host": [
+						"{{baseurl}}"
+					],
+					"path": [
+						"user",
+						"login"
+					],
+					"query": [
+						{
+							"key": "username",
+							"value": "user1"
+						},
+						{
+							"key": "password",
+							"value": "Passw0rd1"
+						}
+					]
+				},
+				"description": "User logs in to the Swagger Petstore system"
+			},
+			"response": []
+		},
+		{
+			"name": "Get user by username",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var schema = {\r",
+							"    \"id\": \"number\",\r",
+							"    \"username\": \"string\",\r",
+							"    \"firstName\": \"string\",\r",
+							"    \"lastName\": \"string\",\r",
+							"    \"email\": \"string\",\r",
+							"    \"password\": \"string\",\r",
+							"    \"phone\": \"string\",\r",
+							"    \"userStatus\": \"number\",\r",
+							"}\r",
+							"\r",
+							"// Check if the response body schema is as required\r",
+							"pm.test(\"Schema is valid\", function(){\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(tv4.validate(jsonData, schema)).to.be.true;\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Get user successfully\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseurl}}/user/user{{userId}}",
+					"host": [
+						"{{baseurl}}"
+					],
+					"path": [
+						"user",
+						"user{{userId}}"
+					]
+				},
+				"description": "Find a user by username and return user data from Petstore"
+			},
+			"response": []
+		},
+		{
+			"name": "Update user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"User is updated successfully\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": 4,\r\n    \"username\": \"user4\",\r\n    \"firstName\": \"user4 fname\",\r\n    \"lastName\": \"user4 ln\",\r\n    \"email\": \"user4@gmail.com\",\r\n    \"password\": \"Passw0rd4\",\r\n    \"phone\": \"423\",\r\n    \"userStatus\": 1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseurl}}/user/user{{userId}}",
+					"host": [
+						"{{baseurl}}"
+					],
+					"path": [
+						"user",
+						"user{{userId}}"
+					]
+				},
+				"description": "Update user data using the username"
+			},
+			"response": []
+		},
+		{
+			"name": "Get user after update",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var schema = {\r",
+							"    \"id\": \"number\",\r",
+							"    \"username\": \"string\",\r",
+							"    \"firstName\": \"string\",\r",
+							"    \"lastName\": \"string\",\r",
+							"    \"email\": \"string\",\r",
+							"    \"password\": \"string\",\r",
+							"    \"phone\": \"string\",\r",
+							"    \"userStatus\": \"number\",\r",
+							"}\r",
+							"\r",
+							"// Check if the response body schema is as required\r",
+							"pm.test(\"Schema is valid\", function(){\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(tv4.validate(jsonData, schema)).to.be.true;\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Get user successfully\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseurl}}/user/user{{userId}}",
+					"host": [
+						"{{baseurl}}"
+					],
+					"path": [
+						"user",
+						"user{{userId}}"
+					]
+				},
+				"description": "Get user data after updating it."
+			},
+			"response": []
+		},
+		{
+			"name": "Delete user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{baseurl}}/user/user{{userId}}",
+					"host": [
+						"{{baseurl}}"
+					],
+					"path": [
+						"user",
+						"user{{userId}}"
+					]
+				},
+				"description": "Delete a user from db using his username"
+			},
+			"response": []
+		},
+		{
+			"name": "Get user after delete",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Check if user is not found\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});\r",
+							"\r",
+							"pm.environment.unset('userID');"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseurl}}/user/user{{userId}}",
+					"host": [
+						"{{baseurl}}"
+					],
+					"path": [
+						"user",
+						"user{{userId}}"
+					]
+				},
+				"description": "Check if user still exists after deletion"
+			},
+			"response": []
+		},
+		{
+			"name": "Logout from Petstore",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Check if user is logged out\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseurl}}/user/logout",
+					"host": [
+						"{{baseurl}}"
+					],
+					"path": [
+						"user",
+						"logout"
+					]
+				},
+				"description": "Logged in user logs out from Swagger Petstore system"
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseurl",
+			"value": "https://petstore.swagger.io/v2",
+			"type": "string"
+		}
+	]
+}
